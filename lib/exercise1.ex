@@ -4,7 +4,8 @@ defmodule Exercise1 do
   """
 
   def start do
-    loop()
+    pid = spawn(Exercise1, :loop, [])
+    {:ok, pid}
   end
 
   def loop do
