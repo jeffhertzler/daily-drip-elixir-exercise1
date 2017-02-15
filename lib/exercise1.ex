@@ -9,15 +9,16 @@ defmodule Exercise1 do
   end
 
   def upcase(pid, str) do
-    send(pid, {self(), {:upcase, str}})
+    ref = make_ref()
+    send(pid, {self(), ref, {:upcase, str}})
     receive do
-      {:ok, str} -> {:ok, str}
+      {:ok, ^ref, str} -> {:ok, str}
     end
   end
 
   def loop do
     receive do
-      {from, {:upcase, str}} -> send(from, {:ok, String.upcase(str)})
+      {from, ref, {:upcase, str}} -> send(from, {:ok, ref, String.upcase(str)})
     end
     loop()
   end
