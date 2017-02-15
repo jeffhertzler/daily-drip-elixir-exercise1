@@ -9,7 +9,6 @@ defmodule Exercise1 do
   end
 
   def upcase(pid, str) do
-    inspect str
     send(pid, {self(), {:upcase, str}})
     receive do
       {:ok, str} -> {:ok, str}
