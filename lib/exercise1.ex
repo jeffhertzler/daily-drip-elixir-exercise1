@@ -8,9 +8,17 @@ defmodule Exercise1 do
     {:ok, pid}
   end
 
+  def upcase(pid, str) do
+    inspect str
+    send(pid, {self(), {:upcase, str}})
+    receive do
+      {:ok, str} -> {:ok, str}
+    end
+  end
+
   def loop do
     receive do
-      {string, from} -> send(from, {:ok, String.upcase(string)})
+      {from, {:upcase, str}} -> send(from, {:ok, String.upcase(str)})
     end
     loop()
   end
